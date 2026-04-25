@@ -7,18 +7,18 @@ import os
 @tool("candidate_search_tool")
 def candidate_search_tool(query: str):
     """Searches the candidates.csv file and returns all candidate details."""
+    # This is the path based on your GitHub structure
+    target_file = 'talent_scout_ai/candidates.csv'
+    # Fallback for local testing (in case you are already inside the folder)
+    if not os.path.exists(target_file):
+        target_file = 'candidates.csv'
     try:
-        # Getting to the path to the current folder where THIS file lives
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        #Going up two levels to reach the root folder (where candidates.csv is)
-        # From: talent_scout_ai/src/talent_scout_ai/crew.py
-        # To: talent_scout_ai/candidates.csv
-        root_dir = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
-        csv_path = os.path.join(root_dir, 'candidates.csv')
-        if not os.path.exists(csv_path):
-            csv_path = 'candidates.csv'
-        df = pd.read_csv(csv_path)
-        return df.to_string()
+        if os.path.exists(target_file):
+            df = pd.read_csv(target_file)
+            return df.to_string()
+        else:
+            # Debugging: This helps us see what Streamlit sees
+            return f"Error: File not found at {target_file}. Current directory: {os.getcwd()}, Contents: {os.listdir()}"
     except Exception as e:
         return f"Error reading CSV: {e}"
 
