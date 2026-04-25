@@ -1,0 +1,23 @@
+analyze_jd_task:
+  description: >
+    Analyze the JD and list top 5 skills.
+  expected_output: >
+    A list of requirements.
+  agent: jd_analyst
+
+scout_candidates_task:
+  description: >
+    Use the CSVSearchTool to find matches in 'candidates.csv'. 
+    Assign a Match Score (0-10) for each.
+  expected_output: >
+    A list of candidates with Match Scores and explanations.
+  agent: candidate_scout
+
+final_ranking_task:
+  description: >
+    Simulate a brief outreach to the top candidates. 
+    Assign an Interest Score (0-10).
+    Output a Markdown table with Name, Match Score, Interest Score, and Total.
+  expected_output: >
+    A final ranked table.
+  agent: engagement_recruiter
