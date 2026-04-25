@@ -1,16 +1,23 @@
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
-from crewai.tools import tool # We use the simple @tool decorator now
+from crewai.tools import tool 
 import pandas as pd
 import os
 
-# --- THIS IS YOUR NEW CUSTOM TOOL ---
 @tool("candidate_search_tool")
 def candidate_search_tool(query: str):
     """Searches the candidates.csv file and returns all candidate details."""
     try:
-        # Just read the CSV file directly
-        df = pd.read_csv('candidates.csv')
+        # Getting to the path to the current folder where THIS file lives
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        #Going up two levels to reach the root folder (where candidates.csv is)
+        # From: talent_scout_ai/src/talent_scout_ai/crew.py
+        # To: talent_scout_ai/candidates.csv
+        root_dir = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
+        csv_path = os.path.join(root_dir, 'candidates.csv')
+        if not os.path.exists(csv_path):
+            csv_path = 'candidates.csv'
+        df = pd.read_csv(csv_path)
         return df.to_string()
     except Exception as e:
         return f"Error reading CSV: {e}"
