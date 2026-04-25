@@ -1,23 +1,34 @@
 analyze_jd_task:
   description: >
-    Analyze the JD and list top 5 skills.
+    Analyze the following Job Description: {job_description}. 
+    Identify the top 5 technical skills required and the minimum years of experience.
   expected_output: >
-    A list of requirements.
+    A list of the core requirements and skills needed for the role.
   agent: jd_analyst
 
 scout_candidates_task:
   description: >
-    Use the CSVSearchTool to find matches in 'candidates.csv'. 
-    Assign a Match Score (0-10) for each.
+    Use the candidate_search_tool to look at all candidates in the CSV.
+    Compare their skills and bios to the requirements found by the JD Analyst.
+    Assign a 'Match Score' (0-10) for each candidate.
   expected_output: >
-    A list of candidates with Match Scores and explanations.
+    A list of the top 3 matching candidates with their Match Scores and a brief reasoning.
   agent: candidate_scout
+
+engage_candidates_task:
+  description: >
+    For the top candidates found, simulate a brief recruitment outreach.
+    Assume the candidate responds with a realistic level of interest.
+    Analyze their simulated response and assign an 'Interest Score' (0-10).
+  expected_output: >
+    A summary of the simulated interaction and an Interest Score for each candidate.
+  agent: engagement_recruiter
 
 final_ranking_task:
   description: >
-    Simulate a brief outreach to the top candidates. 
-    Assign an Interest Score (0-10).
-    Output a Markdown table with Name, Match Score, Interest Score, and Total.
+    Take the Match Scores and Interest Scores for all candidates.
+    Calculate a total score and create a final ranked shortlist.
+    Format the output as a clean Markdown table.
   expected_output: >
-    A final ranked table.
+    A final Markdown table with Name, Match Score, Interest Score, and Total Recommendation.
   agent: engagement_recruiter

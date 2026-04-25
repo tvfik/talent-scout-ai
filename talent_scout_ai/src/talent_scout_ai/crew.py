@@ -1,63 +1,77 @@
-from crewai import Agent, Crew, Process, Task
+from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
-from crewai.agents.agent_builder.base_agent import BaseAgent
-# If you want to run a snippet of code before or after the crew starts,
-# you can use the @before_kickoff and @after_kickoff decorators
-# https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
+from crewai.tools import tool # We use the simple @tool decorator now
+import pandas as pd
+import os
+
+# --- THIS IS YOUR NEW CUSTOM TOOL ---
+@tool("candidate_search_tool")
+def candidate_search_tool(query: str):
+    """Searches the candidates.csv file and returns all candidate details."""
+    try:
+        # Just read the CSV file directly
+        df = pd.read_csv('candidates.csv')
+        return df.to_string()
+    except Exception as e:
+        return f"Error reading CSV: {e}"
 
 @CrewBase
 class TalentScoutAi():
-    """TalentScoutAi crew"""
+    agents_config = 'config/agents.yaml'
+    tasks_config = 'config/tasks.yaml'
 
-    agents: list[BaseAgent]
-    tasks: list[Task]
+    def __init__(self):
+        self.gemini_llm = LLM(
+            model="gemini/gemini-2.5-flash",
+            api_key=os.getenv("GOOGLE_API_KEY")
+        )
 
-    # Learn more about YAML configuration files here:
-    # Agents: https://docs.crewai.com/concepts/agents#yaml-configuration-recommended
-    # Tasks: https://docs.crewai.com/concepts/tasks#yaml-configuration-recommended
-    
-    # If you would like to add tools to your agents, you can learn more about it here:
-    # https://docs.crewai.com/concepts/agents#agent-tools
     @agent
-    def researcher(self) -> Agent:
+    def jd_analyst(self) -> Agent:
         return Agent(
-            config=self.agents_config['researcher'], # type: ignore[index]
+            config=self.agents_config['jd_analyst'],
+            llm=self.gemini_llm,
             verbose=True
         )
 
     @agent
-    def reporting_analyst(self) -> Agent:
+    def candidate_scout(self) -> Agent:
         return Agent(
-            config=self.agents_config['reporting_analyst'], # type: ignore[index]
+            config=self.agents_config['candidate_scout'],
+            tools=[candidate_search_tool], # Use our new custom tool here
+            llm=self.gemini_llm,
             verbose=True
         )
 
-    # To learn more about structured task outputs,
-    # task dependencies, and task callbacks, check out the documentation:
-    # https://docs.crewai.com/concepts/tasks#overview-of-a-task
-    @task
-    def research_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['research_task'], # type: ignore[index]
+    @agent
+    def engagement_recruiter(self) -> Agent:
+        return Agent(
+            config=self.agents_config['engagement_recruiter'],
+            llm=self.gemini_llm,
+            verbose=True
         )
 
     @task
-    def reporting_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['reporting_task'], # type: ignore[index]
-            output_file='report.md'
-        )
+    def analyze_jd_task(self) -> Task:
+        return Task(config=self.tasks_config['analyze_jd_task'])
+
+    @task
+    def scout_candidates_task(self) -> Task:
+        return Task(config=self.tasks_config['scout_candidates_task'])
+
+    @task
+    def engage_candidates_task(self) -> Task:
+        return Task(config=self.tasks_config['engage_candidates_task'])
+
+    @task
+    def final_ranking_task(self) -> Task:
+        return Task(config=self.tasks_config['final_ranking_task'])
 
     @crew
     def crew(self) -> Crew:
-        """Creates the TalentScoutAi crew"""
-        # To learn how to add knowledge sources to your crew, check out the documentation:
-        # https://docs.crewai.com/concepts/knowledge#what-is-knowledge
-
         return Crew(
-            agents=self.agents, # Automatically created by the @agent decorator
-            tasks=self.tasks, # Automatically created by the @task decorator
+            agents=self.agents,
+            tasks=self.tasks,
             process=Process.sequential,
             verbose=True,
-            # process=Process.hierarchical, # In case you wanna use that instead https://docs.crewai.com/how-to/Hierarchical/
         )
