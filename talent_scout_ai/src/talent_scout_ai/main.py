@@ -6,8 +6,11 @@ def run():
     """
     Run the crew to scout candidates based on a Job Description.
     """
+    jd=input("Enter job description: ")
+    count=int(input("How many candidates to shortlist?: "))
     inputs = {
-        'job_description': 'Looking for a Junior ECE engineer with experience in Embedded Systems and C++.'
+        'job_description': jd,
+        'limit': count
     }
     
     try:
