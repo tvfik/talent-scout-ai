@@ -152,12 +152,13 @@ if st.session_state.page == "Dashboard":
         st.divider()
         st.subheader("Specify number of Candidates")
 
+        max_limit=len(st.session_state.candidates_df)
         rank_mode=st.radio("Ranking Method: ",["Let me choose","Entire uploaded Database"], horizontal=True)
         if rank_mode=="Let me choose":
-            rank_limit=st.number_input("Enter number of candidates to shortlist:", min_value=1,step=1,value=5)
+            rank_limit=st.number_input("Enter number of candidates to shortlist:", min_value=1,max_value=max_limit,value=min(1,max_limit))
         else:
             if st.session_state.candidates_df is not None:
-                rank_limit=len(st.session_state.candidates_df)
+                rank_limit=max_limit
                 st.caption(f"System will rank all {rank_limit} candidates.")
             else:
                 rank_limit=10
@@ -175,6 +176,7 @@ if st.session_state.page == "Dashboard":
         elif not jd_input:
             st.error("Please provide a Job Description.")
         else:
+            st.session_state.last_requested_count = rank_limit
             with st.status(f" Ranking top {rank_limit} Matches...", expanded=True) as status:
                 try:
                     crew_instance = TalentScoutAi().crew()
