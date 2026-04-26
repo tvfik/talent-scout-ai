@@ -26,9 +26,17 @@ engage_candidates_task:
 
 final_ranking_task:
   description: >
-    Take the Match Scores and Interest Scores for all candidates.
-    Calculate a total score and create a final ranked shortlist.
-    Format the output as a clean Markdown table.
+    1. Review the Match Scores and Interest Scores for all candidates.
+    2. Rank them from highest to lowest total score.
+    3. For the top candidates, extract their 'linkedin_url' from the source data.
+    4. Summarize their profile into: 'overview', 'tech_skills', 'experience', and 'motivation'.
+    5. Output the final rankings strictly as a raw JSON list of objects. 
+    
+    Each object MUST have these exact keys: 
+    'name', 'overview', 'tech_skills', 'experience', 'motivation', and 'linkedin_url'.
+    
+    DO NOT include any Markdown tables, introductory text, or concluding remarks. 
+    Output ONLY the JSON array.
   expected_output: >
-    A final Markdown table with Name, Match Score, Interest Score, and Total Recommendation.
+    A raw JSON list of candidate objects, e.g., [{"name": "...", "overview": "...", ...}].
   agent: engagement_recruiter
