@@ -137,7 +137,7 @@ with st.sidebar:
     
     st.divider()
     st.caption("Developed by Toufik Jamal Mondal")
-    st.caption("Model in use: Gemini/Gemma 4 31b")
+    st.caption("Model in use: Gemini/Gemini 3.1 Flash Lite")
 
 # 6. Page: Dashboard
 if st.session_state.page == "Dashboard":
