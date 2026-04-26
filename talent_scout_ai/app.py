@@ -154,7 +154,11 @@ if st.session_state.page == "Dashboard":
         st.divider()
         st.subheader("Specify number of Candidates")
 
-        max_limit=len(st.session_state.candidates_df)
+        if st.session_state.candidates_df is not None: 
+            max_limit=len(st.session_state.candidates_df)
+        else: 
+            max_limit=1
+        
         rank_mode=st.radio("Ranking Method: ",["Let me choose","Entire uploaded Database"], horizontal=True)
         if rank_mode=="Let me choose":
             rank_limit=st.number_input("Enter number of candidates to shortlist:", min_value=1,max_value=max_limit,value=min(1,max_limit))
