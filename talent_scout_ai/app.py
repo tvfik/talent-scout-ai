@@ -158,7 +158,7 @@ if st.session_state.page == "Dashboard":
         else:
             if st.session_state.candidates_df is not None:
                 rank_limit=len(st.session_state.candidates_df)
-                st.caption(f"System will rank all {Rank limit} candidates.")
+                st.caption(f"System will rank all {rank_limit} candidates.")
             else:
                 rank_limit=10
                 st.caption("Upload a file to see total count.")
