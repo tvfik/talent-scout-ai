@@ -34,7 +34,7 @@ class TalentScoutAi():
             model=selected_model,
             api_key=os.getenv("GOOGLE_API_KEY"),
             thinking_level="low",
-            temperature=0.2
+            temperature=0.0
         )
 
     @agent

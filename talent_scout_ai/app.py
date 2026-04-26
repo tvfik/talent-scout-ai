@@ -193,7 +193,6 @@ if st.session_state.page == "Dashboard":
     # Display Top 5 Rankings
     if st.session_state.results:
         st.divider()
-        st.markdown("Top matches found: ")
         actual_count=len(st.session_state.results)
         if actual_count > 0: 
             st.markdown(f"Top {actual_count} matches found: ")

@@ -27,16 +27,19 @@ engage_candidates_task:
 final_ranking_task:
   description: >
     1. Review the Match Scores (Skills) and Interest Scores provided by the previous agents for every candidate in the database.
-    2. Apply a strict Quality Gate: ONLY include a candidate in the final list if they meet BOTH of these criteria:
-       - Match Score (Skills) is at least 4/10.
+    2. Audit every candidate and assign a final numerical Total Score based on:
+       $$Total Score = (Match Score \times 0.7) + (Interest Score \times 0.3)$$
+    3. Sort the qualifying candidates in descending order based strictly on their Total Score.
+    4. Apply a strict Quality Gate: ONLY include a candidate in the final list if they meet BOTH of these criteria:
+       - Match Score (Skills) is at least 3/10.
        - Interest Score is at least 3/10.
-    3. If a candidate fails to meet either minimum threshold, exclude them entirely, regardless of their total score.
-    4. Select and rank UP TO {limit} qualifying candidates from highest to lowest total score.
-    5. If no candidates meet these minimums, return an empty JSON list [].
-    6. For each qualifying candidate, generate a summary including: 'name', 'overview', 'tech_skills', 'experience', and 'motivation'.
-    7. IMPORTANT: Keep 'overview' and 'motivation' to 2 sentences max. 
-    8. Use bullet points for 'tech_skills' and 'experience'.
-    9. Output strictly as a raw JSON list. No intro, outro, or conversational filler.
+    5. If a candidate fails to meet either minimum threshold, exclude them entirely, regardless of their total score.
+    6. Select and rank UP TO {limit} qualifying candidates from highest to lowest total score.
+    7. If no candidates meet these minimums, return an empty JSON list [].
+    8. For each qualifying candidate, generate a summary including: 'name', 'overview', 'tech_skills', 'experience', and 'motivation'.
+    9. IMPORTANT: Keep 'overview' and 'motivation' to 2 sentences max. 
+    10. Use bullet points for 'tech_skills' and 'experience'.
+    11. Output strictly as a raw JSON list. No intro, outro, or conversational filler.
     
     JSON Keys: 'name', 'overview', 'tech_skills', 'experience', 'motivation'.
   expected_output: >
