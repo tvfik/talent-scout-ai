@@ -9,153 +9,81 @@ st.set_page_config(page_title="TalentScout AI", layout="wide", page_icon="ðŸ•µï¸
 # 2. Comprehensive CSS Styling (Exact replication of Pinpoint aesthetics)
 st.markdown("""
     <style>
-    /* Google Fonts Injection - Serif for Headers, Sans-Serif for Everything else */
-    @import url('https://fonts.googleapis.com/css2?family=Ovo&family=Inter:wght@400;600;800&display=swap');
+    /* 1. Import Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Ovo&family=Inter:wght@400;600&display=swap');
 
-    /* Color Palette */
-    :root {
-        --bg-color-main: #FAF8F5; /* Light Cream Main Background */
-        --sidebar-bg-color: #2F5D4A; /* Deep Forest Green Sidebar */
-        --sidebar-text-main: #F8F4EF; /* Off-white Sidebar Text */
-        --main-text-color: #3D2D1B; /* Dark Brownish-Charcoal Headers */
-        --body-text-color: #4A4A4A; /* Dark Grey Body Text */
-        --button-bg-subtle: #EAE0D3; /* Deep Cream Subtle Button */
-        --button-text-subtle: #3D2D1B; /* Dark Text for Subtle Button */
-        --accent-teal: #4CB5A6; /* For later use: Progress bar teal */
-        --accent-green: #3D8B6D; /* For later use: Promoter green */
-        --accent-orange: #FF8F1F; /* For later use: Score orange */
-    }
-
-    /* Overall Application Background & Base Typography */
+    /* 2. Global Resets */
     .main {
-        background-color: var(--bg-color-main);
-        color: var(--body-text-color);
-        font-family: 'Inter', sans-serif !important;
-    }
-
-    /* Streamlit's Main Container (including header) */
-    [data-testid="stMain"] {
-        padding: 4rem 5rem !important; /* Generous padding as seen in image */
-    }
-
-    /* Typography Overrides */
-    h1, h2 {
-        font-family: 'Ovo', serif !important; /* High-end serif for main headers */
-        color: var(--main-text-color) !important;
-        font-weight: 400 !important;
-        margin-bottom: 2rem;
-    }
-    h3, h4, .subheader {
-        font-family: 'Inter', sans-serif !important; /* Modern sans-serif for subheaders */
-        color: var(--main-text-color) !important;
-        font-weight: 600 !important;
-        letter-spacing: 0.5px;
-    }
-    p, span, div, label {
-        font-family: 'Inter', sans-serif !important;
-        color: var(--body-text-color);
-    }
-
-    /* --- Sidebar Styling (Fixed narrow Green Sidebar) --- */
-    [data-testid="stSidebar"] {
-        background-color: var(--sidebar-bg-color) !important;
-        padding-top: 4rem !important;
-        color: var(--sidebar-text-main) !important;
-    }
-
-    [data-testid="stSidebarNav"] div[data-testid="stSidebarNavItems"] ul li div {
-        color: var(--sidebar-text-main) !important;
-    }
-
-    /* Style for Sidebar Text and Items */
-    .css-1v3wvcr {
-        color: var(--sidebar-text-main);
-        font-family: 'Inter', sans-serif;
-    }
-    [data-testid="stSidebarNav"] * {
-        color: var(--sidebar-text-main) !important;
-    }
-
-    /* Highlighting active sidebar items (subtle effect) */
-    [data-testid="stSidebarNavItems"] .active {
-        background-color: #3B755D !important; /* Lighter Green Highlight */
-        color: white !important;
-        border-radius: 8px;
+        background-color: #FAF8F5 !important;
     }
     
-    /* Sidebar user avatar capsule (subtle light grey) */
-    [data-testid="stUserAvatarCapsule"] {
-        background-color: rgba(255, 255, 255, 0.1) !important;
-        border-radius: 20px;
-        color: white !important;
+    /* 3. Sidebar - Force Deep Green & Light Text */
+    [data-testid="stSidebar"] {
+        background-color: #2F5D4A !important;
     }
-
-    /* --- Main Content Section Styling --- */
-
-    /* Containers (Card-style layout with subtle spacing and borders) */
-    [data-testid="stBlock"] {
-        background-color: #FAF8F5 !important;
-        border-radius: 0px !important;
-        border: 1px solid #EAE0D3 !important; /* Subtle border seen on metric cards */
-        padding: 2.5rem !important; /* Generous spacing inside cards */
-        margin-bottom: 3rem !important; /* Spacing between cards */
-        box-shadow: none !important;
-    }
-
-    /* Override for nested blocks to prevent recursive borders */
-    [data-testid="stBlock"] [data-testid="stBlock"] {
-        border: none !important;
-        padding: 0px !important;
-        margin-bottom: 0px !important;
-        background-color: transparent !important;
-    }
-
-    /* Text Area Input (Paste JD box) */
-    .stTextArea>div>div {
-        border: 1px solid #EAE0D3 !important;
-        border-radius: 8px !important;
+    
+    /* Force ALL text in sidebar to be off-white */
+    [data-testid="stSidebar"] *, [data-testid="stSidebar"] p, [data-testid="stSidebar"] span {
+        color: #F8F4EF !important;
         font-family: 'Inter', sans-serif !important;
-        color: var(--body-text-color) !important;
     }
 
-    /* Modern Subtle Button (Rounded and deep cream) */
-    .stButton>button {
-        width: 100%;
-        border-radius: 20px; /* High-end roundedness */
-        height: 3.5em;
-        background-color: var(--button-bg-subtle) !important; /* Deep cream bg */
-        color: var(--button-text-subtle) !important; /* Dark brown text */
-        font-family: 'Inter', sans-serif !important;
-        font-weight: 600 !important;
-        border: none !important;
-        transition: 0.3s ease;
-        margin-top: 1rem;
-    }
-    .stButton>button:hover {
-        background-color: #DCCFBF !important; /* Slightly deeper hover cream */
-        color: var(--button-text-subtle) !important;
-    }
-
-    /* Metric cards (e.g., matching text color for 43%) */
-    [data-testid="stMetricValue"] {
-        font-family: 'Inter', sans-serif !important;
-        color: var(--main-text-color) !important;
-        font-weight: 800 !important;
-    }
-    [data-testid="stMetricLabel"] {
-        font-family: 'Inter', sans-serif !important;
-        color: var(--body-text-color) !important;
-    }
-
-    /* Custom main header style to use serif Ovo font */
+    /* 4. Main Header - The Pinpoint Serif Style */
     .main-header {
         font-family: 'Ovo', serif !important;
-        font-size: 3rem;
-        font-weight: 400;
-        color: var(--main-text-color);
-        margin-bottom: 2rem;
+        font-size: 3rem !important;
+        color: #3D2D1B !important;
+        margin-bottom: 1.5rem !important;
+        padding-top: 1rem;
+    }
+
+    /* 5. Fix the File Uploader Overlap */
+    /* We need to be careful not to squash the internal upload button */
+    [data-testid="stFileUploader"] {
+        background-color: #FFFFFF;
+        border: 1px dashed #EAE0D3;
+        border-radius: 8px;
+        padding: 10px;
     }
     
+    /* This fixes the 'upload upload' text bug */
+    [data-testid="stFileUploader"] section {
+        padding: 10px !important;
+    }
+
+    /* 6. Clean Card Containers */
+    /* We use 'section' because Streamlit wraps columns in section tags */
+    [data-testid="stVerticalBlock"] > div > div > div[data-testid="stVerticalBlock"] {
+        background-color: #FAF8F5 !important;
+        border: 1px solid #EAE0D3 !important;
+        padding: 20px !important;
+        border-radius: 4px !important;
+    }
+
+    /* 7. Subtle Modern Button */
+    .stButton>button {
+        width: 100%;
+        border-radius: 25px !important;
+        background-color: #EAE0D3 !important;
+        color: #3D2D1B !important;
+        font-weight: 600 !important;
+        border: 1px solid #DCCFBF !important;
+        height: 3.5em !important;
+        transition: all 0.3s ease;
+    }
+    
+    .stButton>button:hover {
+        background-color: #3D2D1B !important;
+        color: #FFFFFF !important;
+        border: none !important;
+    }
+
+    /* 8. Text Area Styling */
+    .stTextArea textarea {
+        background-color: #FFFFFF !important;
+        border: 1px solid #EAE0D3 !important;
+        color: #3D2D1B !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
