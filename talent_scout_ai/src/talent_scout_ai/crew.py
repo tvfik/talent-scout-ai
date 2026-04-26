@@ -28,8 +28,10 @@ class TalentScoutAi():
     tasks_config = 'config/tasks.yaml'
 
     def __init__(self):
+        selected_model="gemini/gemini-3.1-flash-lite"
+        #selected_model="gemini/gemma-4-31B"
         self.gemini_llm = LLM(
-            model="gemini/gemini-2.5-flash",
+            model=selected_model,
             api_key=os.getenv("GOOGLE_API_KEY")
         )
 
@@ -81,4 +83,5 @@ class TalentScoutAi():
             tasks=self.tasks,
             process=Process.sequential,
             verbose=True,
+            max_rpm=10
         )
