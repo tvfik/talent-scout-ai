@@ -89,7 +89,7 @@ st.markdown("""
 
 # 3. Sidebar - Mimicking the Fixed Narrow Menu from Image
 with st.sidebar:
-    st.image("", width=120)
+    st.image("https://pinpoint.co/img/favicons/favicon-196x196.png", width=120)
     st.divider()
     # Using placeholder text instead of active components for style-only replication
     st.markdown("### **Menu**")
