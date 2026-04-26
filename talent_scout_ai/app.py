@@ -15,6 +15,8 @@ if "candidates_df" not in st.session_state:
     st.session_state.candidates_df = None
 if "results" not in st.session_state:
     st.session_state.results = None
+if "last_requested_count" not in st.session_state:
+    st.session_state.last_requested_count = 0 #placeholder
 
 # 3. Enhanced Pinpoint CSS
 st.markdown("""
@@ -193,13 +195,16 @@ if st.session_state.page == "Dashboard":
                     st.error(f"Execution Error: {e}")
 
     # Display Top 5 Rankings
-    if st.session_state.results:
+    if st.session_state.results is not None:
         st.divider()
         actual_count=len(st.session_state.results)
+
+        locked_limit=st.session_state.last_requested_count
+
         if actual_count > 0: 
             st.markdown(f"Top {actual_count} matches found: ")
-            if actual_count<rank_limit:
-                st.warning(f"NOTE: You requested {rank_limit} candidates, but only {actual_count} met the required quality thresholds. The remaining profiles were excluded due to poor compatibility or skill mismatch.")
+            if actual_count<locked_limit:
+                st.warning(f"NOTE: You requested {locked_limit} candidates, but only {actual_count} met the required quality thresholds. The remaining profiles were excluded due to poor compatibility or skill mismatch.")
         else:
             st.info("⚠️ No candidates met the minimum compatibility criteria for this position.")
         for cand in st.session_state.results:
