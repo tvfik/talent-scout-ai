@@ -101,7 +101,15 @@ st.markdown("""
         font-weight: 600 !important;
         border: none !important;
         height: 3.5em !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Smooth lift */
     }
+    .stButton>button:hover {
+        background-color: #3D2D1B !important; /* Dark Chocolate */
+        color: white !important;
+        transform: translateY(-3px) !important; /* Lifts the button up */
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15) !important; /* Adds depth shadow */
+        border: none !important; }
+
     </style>
     """, unsafe_allow_html=True)
 
@@ -126,7 +134,8 @@ with st.sidebar:
         st.session_state.page = "View Candidates"
     
     st.divider()
-    st.caption("Developed by Toufik Jamal Mondal \n Model used: Gemini/Gemma 4 31b")
+    st.caption("Developed by Toufik Jamal Mondal")
+    st.caption("Model in use: Gemini/Gemma 4 31b")
 
 # 6. Page: Dashboard
 if st.session_state.page == "Dashboard":
@@ -140,6 +149,19 @@ if st.session_state.page == "Dashboard":
             up_file = st.file_uploader("Upload CSV", type="csv", key="dash_upload")
             if handle_upload(up_file):
                 st.success("Candidate Database Synced")
+        st.divider()
+        st.subheader("Specify number of Candidates")
+
+        rank_mode=st.radio("Ranking Method: ",["Let me choose","Entire uploaded Database"], horizontal=True)
+        if rank_mode=="Let me choose":
+            rank_limit=st.number_input("Enter number of candidates to shortlist:", min_value=1,step=1,value=5)
+        else:
+            if st.session_state.candidates_df is not None:
+                rank_limit=len(st.session_state.candidates_df)
+                st.caption(f"System will rank all {Rank limit} candidates.")
+            else:
+                rank_limit=10
+                st.caption("Upload a file to see total count.")
 
     with col2:
         with st.container(border=True):
@@ -153,10 +175,10 @@ if st.session_state.page == "Dashboard":
         elif not jd_input:
             st.error("Please provide a Job Description.")
         else:
-            with st.status("🕵️ Ranking top talent...", expanded=True) as status:
+            with st.status(f" Ranking top {rank_limit} Matches...", expanded=True) as status:
                 try:
                     crew_instance = TalentScoutAi().crew()
-                    result = crew_instance.kickoff(inputs={'job_description': jd_input})
+                    result = crew_instance.kickoff(inputs={'job_description': jd_input, 'limit':rank_limit})
                     
                     # Clean the JSON output
                     json_match = re.search(r'\[.*\]', result.raw, re.DOTALL)
