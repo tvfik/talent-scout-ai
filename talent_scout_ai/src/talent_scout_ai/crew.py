@@ -28,8 +28,8 @@ class TalentScoutAi():
     tasks_config = 'config/tasks.yaml'
 
     def __init__(self):
-        #selected_model="gemini/gemini-3.1-flash-lite"
-        selected_model="gemini/gemma-4-31b-it"
+        selected_model="gemini/gemini-3.1-flash-lite"
+        #selected_model="gemini/gemma-4-31b-it"
         self.gemini_llm = LLM(
             model=selected_model,
             api_key=os.getenv("GOOGLE_API_KEY")
@@ -58,7 +58,9 @@ class TalentScoutAi():
             config=self.agents_config['engagement_recruiter'],
             llm=self.gemini_llm,
             verbose=True,
+            allow_delegation=False,
             max_iter=4,
+            cache=True
         )
 
     @task
