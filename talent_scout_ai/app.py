@@ -126,17 +126,17 @@ with st.sidebar:
         st.session_state.page = "View Candidates"
     
     st.divider()
-    st.caption("Mode: Enterprise Edition")
+    st.caption("Developed by Toufik Jamal Mondal \n Model used: Gemini/Gemma 4 31b")
 
 # 6. Page: Dashboard
 if st.session_state.page == "Dashboard":
-    st.markdown('<div class="main-header">Talent Insights Dashboard</div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-header">Talent Scouter AI Dashboard</div>', unsafe_allow_html=True)
 
     col1, col2 = st.columns([1, 1.3], gap="large")
 
     with col1:
         with st.container(border=True):
-            st.subheader("👥 Database Entry")
+            st.subheader("Candidate Database")
             up_file = st.file_uploader("Upload CSV", type="csv", key="dash_upload")
             if handle_upload(up_file):
                 st.success("Candidate Database Synced")
@@ -145,7 +145,7 @@ if st.session_state.page == "Dashboard":
         with st.container(border=True):
             st.subheader("📋 Analysis Parameters")
             jd_input = st.text_area("Paste Job Description:", height=200, placeholder="Requirements and skills...")
-            run_btn = st.button("🚀 Process Top 5 Candidates")
+            run_btn = st.button("Rank Candidates")
 
     if run_btn:
         if not st.session_state.candidates_df is not None:
@@ -171,7 +171,7 @@ if st.session_state.page == "Dashboard":
     # Display Top 5 Rankings
     if st.session_state.results:
         st.divider()
-        st.markdown("### 🏆 Top 5 Matches")
+        st.markdown("Top matches found: ")
         
         for cand in st.session_state.results:
             with st.expander(f"👤 {cand['name']}"):
@@ -185,7 +185,7 @@ if st.session_state.page == "Dashboard":
                     st.markdown(f"""
                         <div class="ln-badge-static">
                             <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="18" style="margin-right:8px;">
-                            LinkedIn Profile Identified
+                            Click to view LinkedIn Profile
                         </div>
                     """, unsafe_allow_html=True)
 
@@ -194,7 +194,7 @@ elif st.session_state.page == "View Candidates":
     st.markdown('<div class="main-header">Candidate Management</div>', unsafe_allow_html=True)
     
     with st.container(border=True):
-        st.subheader("📁 Upload & View Database")
+        st.subheader("📁 View your Candidates List")
         up_file_view = st.file_uploader("Upload CSV to view list", type="csv", key="view_upload")
         handle_upload(up_file_view)
 
