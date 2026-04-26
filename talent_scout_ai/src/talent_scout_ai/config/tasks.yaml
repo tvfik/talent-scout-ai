@@ -26,17 +26,11 @@ engage_candidates_task:
 
 final_ranking_task:
   description: >
-    1. Review the Match Scores and Interest Scores for all candidates.
-    2. Rank them from highest to lowest total score.
-    3. For the top candidates, extract their 'linkedin_url' from the source data.
-    4. Summarize their profile into: 'overview', 'tech_skills', 'experience', and 'motivation'.
-    5. Output the final rankings strictly as a raw JSON list of objects. 
+    1. Review all candidates and select only the TOP 5 based on JD fit.
+    2. Generate a summary for each including: 'overview', 'tech_skills', 'experience', and 'motivation'.
+    3. Output strictly as a raw JSON list. Do not include any other text.
     
-    Each object MUST have these exact keys: 
-    'name', 'overview', 'tech_skills', 'experience', 'motivation', and 'linkedin_url'.
-    
-    DO NOT include any Markdown tables, introductory text, or concluding remarks. 
-    Output ONLY the JSON array.
+    JSON Keys: 'name', 'overview', 'tech_skills', 'experience', 'motivation'.
   expected_output: >
-    A raw JSON list of candidate objects, e.g., [{"name": "...", "overview": "...", ...}].
+    A raw JSON list of the Top 5 candidates only.
   agent: engagement_recruiter

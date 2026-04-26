@@ -58,6 +58,7 @@ class TalentScoutAi():
             config=self.agents_config['engagement_recruiter'],
             llm=self.gemini_llm,
             verbose=True
+            max_iter=4,
         )
 
     @task
