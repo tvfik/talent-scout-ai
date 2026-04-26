@@ -62,7 +62,8 @@ class TalentScoutAi():
             verbose=True,
             allow_delegation=False,
             max_iter=4,
-            cache=True
+            cache=True,
+            memory=True
         )
 
     @task

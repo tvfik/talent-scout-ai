@@ -194,7 +194,13 @@ if st.session_state.page == "Dashboard":
     if st.session_state.results:
         st.divider()
         st.markdown("Top matches found: ")
-        
+        actual_count=len(st.session_state.results)
+        if actual_count > 0: 
+            st.markdown(f"Top {actual_count} matches found: ")
+            if actual_count<rank_limit:
+                st.warning(f"NOTE: You requested {rank_limit} candidates, but only {actual_count} met the required quality thresholds. The remaining profiles were excluded due to poor compatibility or skill mismatch.")
+        else:
+            st.info("⚠️ No candidates met the minimum compatibility criteria for this position.")
         for cand in st.session_state.results:
             with st.expander(f"👤 {cand['name']}"):
                 c1, c2 = st.columns([2, 1])

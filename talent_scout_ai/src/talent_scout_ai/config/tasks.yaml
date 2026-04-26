@@ -26,13 +26,19 @@ engage_candidates_task:
 
 final_ranking_task:
   description: >
-    1. Review all candidates and select only the TOP {limit} based on JD fit.
-    2. Generate a summary for each including: 'overview', 'tech_skills', 'experience', and 'motivation'.
-    3. Output strictly as a raw JSON list. Do not include any other text.
-    4. IMPORTANT: Keep 'overview' and 'motivation' to 2 sentences max.
-    5. Use bullet points for 'tech_skills' and 'experience'
-    6. Output only raw JSON. No intro, no outro.
+    1. Review the Match Scores (Skills) and Interest Scores provided by the previous agents for every candidate in the database.
+    2. Apply a strict Quality Gate: ONLY include a candidate in the final list if they meet BOTH of these criteria:
+       - Match Score (Skills) is at least 4/10.
+       - Interest Score is at least 3/10.
+    3. If a candidate fails to meet either minimum threshold, exclude them entirely, regardless of their total score.
+    4. Select and rank UP TO {limit} qualifying candidates from highest to lowest total score.
+    5. If no candidates meet these minimums, return an empty JSON list [].
+    6. For each qualifying candidate, generate a summary including: 'name', 'overview', 'tech_skills', 'experience', and 'motivation'.
+    7. IMPORTANT: Keep 'overview' and 'motivation' to 2 sentences max. 
+    8. Use bullet points for 'tech_skills' and 'experience'.
+    9. Output strictly as a raw JSON list. No intro, outro, or conversational filler.
+    
     JSON Keys: 'name', 'overview', 'tech_skills', 'experience', 'motivation'.
   expected_output: >
-    A raw JSON list of exactly {limit} candidates only. No conversational filler
+    A raw JSON list of qualifying candidates (Skills >= 4/10 AND Interest >= 3/10). Returns [] if no one qualifies.
   agent: engagement_recruiter
