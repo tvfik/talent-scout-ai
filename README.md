@@ -36,4 +36,4 @@ Or using pip: pip install -r requirements.txt
 6. type: cd talent_scout_ai
 7. then type: crewai run
 
-! Online link ! (easy, no setup, instant execution): https://ai-talent-scouter.streamlit.app/#key-insights
+! Online link ! (easy, no setup, instant execution): [The link has been hidden due to API usage limit restrictions]
